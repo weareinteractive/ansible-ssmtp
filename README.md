@@ -1,7 +1,7 @@
-# Ansible Ssmtp Role
+# Ansible SSMTP Role
 
 [![Build Status](https://img.shields.io/travis/weareinteractive/ansible-ssmtp.svg)](https://travis-ci.org/weareinteractive/ansible-ssmtp)
-[![Galaxy](http://img.shields.io/badge/galaxy-franklinkim.ssmtp-blue.svg)](https://galaxy.ansible.com/list#/roles/)
+[![Galaxy](http://img.shields.io/badge/galaxy-franklinkim.ssmtp-blue.svg)](https://galaxy.ansible.com/list#/roles/3916)
 [![GitHub Tags](https://img.shields.io/github/tag/weareinteractive/ansible-ssmtp.svg)](https://github.com/weareinteractive/ansible-ssmtp)
 [![GitHub Stars](https://img.shields.io/github/stars/weareinteractive/ansible-ssmtp.svg)](https://github.com/weareinteractive/ansible-ssmtp)
 
@@ -41,15 +41,28 @@ $ git clone https://github.com/weareinteractive/ansible-ssmtp.git franklinkim.ss
 Here is a list of all the default variables for this role, which are also available in `defaults/main.yml`.
 
 ```
-- hosts: all
-  sudo: yes
-  roles:
-    - franklinkim.ssmtp
-  vars:
-    ssmtp_root: admin@example.com
-    ssmtp_mailhub: smtp.mandrillapp.com:587
-    ssmtp_auth_user: the_mandrill_account_username
-    ssmtp_auth_pass: the_mandrill_api_key
+# package name (version)
+ssmtp_package: ssmtp
+# The person who gets all mail for userids < 1000
+# Make this empty to disable rewriting.
+ssmtp_root: postmaster
+# The place where the mail goes. The actual machine name is required no
+# MX records are consulted. Commonly mailhosts are named mail.domain.com
+ssmtp_mailhub: mail
+# Where will the mail seem to come from?
+ssmtp_rewrite_domain:
+# The full hostname (defaults to ansible_fqdn)
+hostname:
+# Are users allowed to set their own From: address?
+# YES - Allow the user to specify their own From: address
+# NO - Use the system generated From: address
+ssmtp_from_line_override: 'YES'
+# use TLS
+ssmtp_use_starttls: 'YES'
+# user name
+ssmtp_auth_user:
+# password
+ssmtp_auth_pass:
 ```
 
 ## Handlers
@@ -66,8 +79,10 @@ These are the handlers that are defined in `handlers/main.yml`.
   roles:
     - franklinkim.ssmtp
   vars:
-    ssmtp_service_enabled: yes
-    ssmtp_service_state: started
+    ssmtp_root: admin@example.com
+    ssmtp_mailhub: smtp.mandrillapp.com:587
+    ssmtp_auth_user: the_mandrill_account_username
+    ssmtp_auth_pass: the_mandrill_api_key
 ```
 
 ## Testing
