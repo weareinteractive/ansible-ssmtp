@@ -14,7 +14,7 @@ ssmtp_mailhub: mail
 # Where will the mail seem to come from?
 ssmtp_rewrite_domain:
 # The full hostname (defaults to ansible_fqdn)
-hostname:
+ssmtp_hostname:
 # Are users allowed to set their own From: address?
 # YES - Allow the user to specify their own From: address
 # NO - Use the system generated From: address
